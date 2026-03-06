@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Birthday Dishita 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#110c14;color:white;font-family:'Poppins',sans-serif;overflow-x:hidden;}
+::selection{background:#ff69b4;color:white;}
+::-webkit-scrollbar{width:8px;}::-webkit-scrollbar-track{background:#110c14;}::-webkit-scrollbar-thumb{background:#ff69b4;border-radius:4px;}
+.cur{font-family:'Dancing Script',cursive;}
+@keyframes hpulse{0%,100%{transform:scale(1);opacity:.8;}50%{transform:scale(1.15);opacity:1;filter:drop-shadow(0 0 12px rgba(255,105,180,.7));}}
+@keyframes flicker{0%{transform:scale(1) rotate(-2deg);}100%{transform:scale(1.1) rotate(2deg);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes floating{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+@keyframes twinkle{0%,100%{opacity:.1;}50%{opacity:.9;}}
+@keyframes slideUp{from{opacity:0;transform:scale(.97);}to{opacity:1;transform:scale(1);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+.hpulse{animation:hpulse 1.5s infinite ease-in-out;}
+.flame{animation:flicker .5s infinite alternate;transform-origin:bottom center;}
+.fadein{animation:fadeIn 1.5s ease-out forwards;}
+.floatanim{animation:floating 3s ease-in-out infinite;}
+.blink{animation:blink 2s infinite;}
+.polaroid{background:white;padding:10px 10px 28px;box-shadow:0 10px 25px rgba(0,0,0,.45);border-radius:3px;transition:transform .3s;}
+.polaroid:hover{transform:scale(1.07) rotate(0deg)!important;z-index:10;position:relative;}
+.tcard{background:#1a1221;border:1px solid rgba(236,72,153,.2);border-radius:14px;padding:1.4rem 1.6rem;margin-left:28px;margin-bottom:2.8rem;transition:border-color .3s;}
+.tcard:hover{border-color:rgba(236,72,153,.55);}
+.pbtn{background:#ec4899;color:white;border:none;padding:11px 30px;border-radius:50px;font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(236,72,153,.35);}
+.pbtn:hover{background:#db2777;transform:translateY(-1px);}
+.pbtn:disabled{background:#888;cursor:not-allowed;transform:none;box-shadow:none;}
+.statpill{background:rgba(131,24,67,.35);padding:10px 18px;border-radius:10px;min-width:85px;text-align:center;}
+.uslot{border:2px dashed rgba(236,72,153,.4);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;color:#f472b6;font-size:.85rem;cursor:pointer;transition:border-color .2s;}
+.uslot:hover{border-color:rgba(236,72,153,.8);}
+#modalbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:999;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(8px);}
+#modalbg.open{display:flex;animation:fadeIn .3s ease forwards;}
+#modalinner{background:#fff9f0;max-width:660px;width:100%;max-height:88vh;overflow-y:auto;border-radius:18px;padding:2.5rem 2.8rem;position:relative;color:#333;animation:slideUp .35s ease forwards;}
+
+/* GitHub uploader modal */
+#ghmodalbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:1000;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(10px);}
+#ghmodalbg.open{display:flex;animation:fadeIn .3s ease forwards;}
+#ghmodalinner{background:#1a1221;border:1px solid rgba(236,72,153,.35);max-width:540px;width:100%;border-radius:20px;padding:2.2rem 2.4rem;position:relative;animation:slideUp .35s ease forwards;}
+.gh-input{background:#110c14;border:1px solid rgba(236,72,153,.3);color:white;padding:10px 14px;border-radius:10px;width:100%;font-family:'Poppins',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+.gh-input:focus{border-color:#ec4899;}
+.gh-input::placeholder{color:#666;}
+.progress-bar{background:rgba(236,72,153,.15);border-radius:50px;height:8px;overflow:hidden;margin-top:.5rem;}
+.progress-fill{background:linear-gradient(90deg,#ec4899,#f472b6);height:100%;border-radius:50px;transition:width .3s ease;width:0%;}
+.spin{display:inline-block;animation:spin .7s linear infinite;}
+.photo-thumb{width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid rgba(236,72,153,.4);}
+.upload-row{display:flex;align-items:center;gap:.75rem;padding:.55rem 0;border-bottom:1px solid rgba(236,72,153,.1);}
+.upload-row:last-child{border-bottom:none;}
+.status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dot-pending{background:#555;}
+.dot-uploading{background:#fbbf24;animation:blink .5s infinite;}
+.dot-done{background:#34d399;}
+.dot-error{background:#f87171;}
+</style>
+</head>
+<body>
+<div id="starsbg" style="position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;"></div>
+
+<!-- Transition -->
+<div id="overlay" style="display:none;position:fixed;inset:0;background:#110c14;z-index:200;flex-direction:column;align-items:center;justify-content:center;">
+  <svg width="64" height="64" viewBox="0 0 24 24" fill="#ec4899" class="hpulse" style="margin-bottom:1.5rem;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  <h2 class="cur" style="font-size:2rem;color:#f9a8d4;">Loading Love for Dishita...</h2>
+</div>
+
+<!-- INTRO -->
+<div id="intro" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;position:relative;z-index:1;">
+  <div class="fadein" style="text-align:center;margin-bottom:2.5rem;">
+    <h1 class="cur" style="font-size:clamp(2.6rem,8vw,5.5rem);color:#f472b6;line-height:1.25;filter:drop-shadow(0 0 16px rgba(255,105,180,.45));margin-bottom:1.5rem;">Happiiesttt Birthdayy,<br/>Dishita</h1>
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="#ec4899" class="hpulse" style="display:block;margin:0 auto;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  </div>
+  <div class="fadein" style="animation-delay:.5s;display:flex;flex-direction:column;align-items:center;">
+    <p id="hint" style="color:#d1d5db;margin-bottom:3.5rem;font-size:1.05rem;text-align:center;">Tap each candle to make a wish ✨</p>
+    <div style="position:relative;display:inline-block;" id="cakewrap">
+      <div id="candlerow" style="display:flex;justify-content:center;gap:1rem;position:absolute;top:-72px;left:0;right:0;z-index:10;"></div>
+      <svg id="cakesvg" width="240" height="140" viewBox="0 0 240 140" style="filter:drop-shadow(0 10px 30px rgba(236,72,153,.35));cursor:default;">
+        <ellipse cx="120" cy="130" rx="110" ry="10" fill="#2d1b2e"/>
+        <g id="whole">
+          <path d="M 30 70 L 210 70 L 210 120 C 210 125.5 169.7 130 120 130 C 70.3 130 30 125.5 30 120 Z" fill="#ff9ebd"/>
+          <path d="M 30 95 C 70 98 170 98 210 95" stroke="#e07a9c" stroke-width="4" fill="none" stroke-dasharray="10,5"/>
+          <path d="M 25 70 C 25 60 215 60 215 70 C 215 75 200 85 190 75 C 180 85 165 75 155 85 C 145 75 130 85 120 75 C 110 85 95 75 85 85 C 75 75 60 85 50 75 C 40 85 25 75 25 70 Z" fill="#fff"/>
+          <rect x="60" y="55" width="4" height="8" rx="2" fill="#ff6b6b" transform="rotate(25 60 55)"/>
+          <rect x="100" y="50" width="4" height="8" rx="2" fill="#4ecdc4" transform="rotate(-15 100 50)"/>
+          <rect x="150" y="58" width="4" height="8" rx="2" fill="#ffe66d" transform="rotate(45 150 58)"/>
+          <rect x="180" y="52" width="4" height="8" rx="2" fill="#a8e6cf" transform="rotate(-30 180 52)"/>
+        </g>
+        <g id="bitten" style="display:none;">
+          <path d="M 30 70 L 150 70 C 150 80 160 85 170 85 C 180 85 185 95 180 105 C 175 115 185 120 195 120 L 210 120 C 210 125.5 169.7 130 120 130 C 70.3 130 30 125.5 30 120 Z" fill="#ff9ebd"/>
+          <path d="M 25 70 C 25 60 160 60 160 70 C 160 75 155 80 150 75 C 140 85 125 75 115 85 C 105 75 90 85 80 75 C 70 85 55 75 45 75 C 35 85 25 75 25 70 Z" fill="#fff"/>
+        </g>
+      </svg>
+    </div>
+    <p id="bitehint" class="blink" style="color:#f9a8d4;margin-top:1.8rem;font-size:.9rem;display:none;">🎉 All wishes made! Tap the cake!</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main" style="display:none;max-width:880px;margin:0 auto;padding:4.5rem 1.5rem 7rem;position:relative;z-index:1;">
+
+  <div style="text-align:center;margin-bottom:5rem;">
+    <h1 class="cur" style="font-size:clamp(2.5rem,7vw,4rem);color:#f472b6;margin-bottom:1rem;">Happy Birthday, Dishita!</h1>
+    <div style="display:flex;justify-content:center;gap:.5rem;font-size:1.2rem;">⭐ ❤️ ⭐</div>
+  </div>
+
+  <!-- Gallery -->
+  <div style="margin-bottom:6rem;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:.75rem;margin-bottom:.5rem;">
+      <h2 class="cur" style="font-size:clamp(1.8rem,5vw,2.8rem);color:#f9a8d4;">Our Best Moments</h2>📸
+    </div>
+    <p style="text-align:center;color:#888;font-size:.8rem;margin-bottom:2rem;">Click any photo slot to add your picture</p>
+    <div id="gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:2rem;padding:0 .5rem;"></div>
+  </div>
+
+  <!-- Letter -->
+  <div style="margin-bottom:6rem;display:flex;flex-direction:column;align-items:center;">
+    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:2rem;">
+      <h2 class="cur" style="font-size:clamp(1.8rem,5vw,2.8rem);color:#f9a8d4;">A Letter For You</h2>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#f472b6"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </div>
+    <div onclick="document.getElementById('modalbg').classList.add('open')" style="cursor:pointer;transition:transform .3s;" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
+      <div style="width:192px;height:128px;background:#ec4899;border-radius:12px;box-shadow:0 10px 30px rgba(236,72,153,.45);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:0;border-left:96px solid transparent;border-right:96px solid transparent;border-top:64px solid #db2777;z-index:2;"></div>
+        <div style="position:absolute;top:0;left:0;right:0;height:0;border-left:96px solid #f472b6;border-right:96px solid #f472b6;border-bottom:128px solid transparent;"></div>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="position:relative;z-index:3;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span style="position:absolute;bottom:-4px;right:8px;font-size:2rem;z-index:4;">💌</span>
+      </div>
+      <p class="blink" style="text-align:center;margin-top:.75rem;color:#f9a8d4;font-weight:500;">Click to open!</p>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div style="margin-bottom:6rem;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:.75rem;margin-bottom:3rem;">
+      <h2 class="cur" style="font-size:clamp(1.8rem,5vw,2.8rem);color:#f9a8d4;">Our Friendship Journey</h2>✨
+    </div>
+    <div id="timeline" style="position:relative;border-left:2px solid rgba(236,72,153,.3);margin-left:8px;"></div>
+  </div>
+
+  <!-- Memories -->
+  <div style="margin-bottom:6rem;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:.75rem;margin-bottom:.5rem;">
+      <h2 class="cur" style="font-size:clamp(1.8rem,5vw,2.8rem);color:#f9a8d4;">Happy Memories 🎞️</h2>
+    </div>
+    <p style="text-align:center;color:#888;font-size:.8rem;margin-bottom:2rem;">Click each frame to add your favourite memories</p>
+    <div id="memories" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1.5rem;padding:0 .5rem;"></div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;border-top:1px solid rgba(236,72,153,.2);padding-top:4rem;">
+    <h2 class="cur" style="font-size:clamp(2.5rem,7vw,4rem);color:#f472b6;margin-bottom:.5rem;">Love You!</h2>
+    <p style="font-size:1.2rem;color:#d1d5db;margin-bottom:2.5rem;">Happy Birthday, Dishita 💖</p>
+    <div style="display:inline-block;background:#1a1221;padding:2rem 3rem;border-radius:20px;border:1px solid rgba(236,72,153,.2);">
+      <p style="color:#f9a8d4;font-size:.75rem;text-transform:uppercase;letter-spacing:.2em;font-weight:600;margin-bottom:1rem;">Besties Since Always</p>
+      <div style="display:flex;gap:1rem;justify-content:center;">
+        <div class="statpill"><span id="dv" style="display:block;font-size:2rem;font-weight:700;color:#f472b6;">0</span><span style="font-size:.75rem;color:#9ca3af;">Days</span></div>
+        <div class="statpill"><span id="hv" style="display:block;font-size:2rem;font-weight:700;color:#f472b6;">0</span><span style="font-size:.75rem;color:#9ca3af;">Hours</span></div>
+        <div class="statpill"><span id="mv" style="display:block;font-size:2rem;font-weight:700;color:#f472b6;">0</span><span style="font-size:.75rem;color:#9ca3af;">Mins</span></div>
+      </div>
+    </div>
+    <div style="margin-top:2.5rem;">
+      <button class="pbtn" onclick="openGithubModal()" style="font-size:1rem;padding:13px 36px;">
+        📸 Upload Photos to Website
+      </button>
+      <p style="color:#888;font-size:.75rem;margin-top:.6rem;">Photos go straight to GitHub — they'll show up on the live site!</p>
+    </div>
+  </div>
+</div>
+
+<!-- Letter Modal -->
+<div id="modalbg" onclick="if(event.target===this)this.classList.remove('open')">
+  <div id="modalinner">
+    <button onclick="document.getElementById('modalbg').classList.remove('open')" style="position:absolute;top:14px;right:14px;width:38px;height:38px;background:#fce7f3;border:none;border-radius:50%;font-size:1rem;color:#ec4899;cursor:pointer;">✕</button>
+    <h2 class="cur" style="font-size:clamp(1.8rem,5vw,3rem);color:#ec4899;margin-bottom:1.5rem;border-bottom:2px solid #fce7f3;padding-bottom:1rem;">My Dearest Dishita,</h2>
+    <div class="cur" style="font-size:clamp(1.1rem,2.5vw,1.35rem);line-height:1.9;color:#555;display:flex;flex-direction:column;gap:1.3rem;">
+      <p>Happy Birthday to my absolute favorite person here! 🎉</p>
+      <p>Your smile lights up any room you walk into, and your energy is so contagious. I feel incredibly lucky to have you in my life. Every moment with you is an adventure, even if we are just sitting and doing absolutely nothing.</p>
+      <p>You are not just awesome, my partner in crime, my safe space, and my biggest cheerleader. Thank you for always listening to my endless rants, for the spontaneous plans, and for simply being you. 🥺</p>
+      <p>I hope this year brings you all the happiness, success, and love that you deserve. Don't ever stop being the amazing, beautiful, and kind-hearted soul that you are. I promise to always be by your side, cheering for you, fighting for you, and celebrating you!</p>
+      <p>Enjoy your special day. We are going to celebrate exactly the way you want to! 🎂✨</p>
+      <div style="margin-top:1.5rem;text-align:right;">
+        <p style="color:#666;">With all my love,</p>
+        <p style="color:#ec4899;font-weight:700;font-size:1.8rem;margin-top:.4rem;">Pravneet 💖</p>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:2rem;">
+      <button class="pbtn" onclick="document.getElementById('modalbg').classList.remove('open')">Close Letter</button>
+    </div>
+  </div>
+</div>
+
+<!-- GitHub Upload Modal -->
+<div id="ghmodalbg" onclick="if(event.target===this&&!ghUploading)closeGhModal()">
+  <div id="ghmodalinner">
+    <button id="ghclose" onclick="closeGhModal()" style="position:absolute;top:14px;right:14px;width:34px;height:34px;background:rgba(236,72,153,.15);border:none;border-radius:50%;font-size:1rem;color:#ec4899;cursor:pointer;">✕</button>
+
+    <!-- Step 1: Setup -->
+    <div id="ghstep1">
+      <h2 class="cur" style="font-size:1.9rem;color:#f472b6;margin-bottom:.3rem;">Upload Photos 📸</h2>
+      <p style="color:#9ca3af;font-size:.83rem;margin-bottom:1.6rem;">Photos go straight to GitHub and appear on the live website!</p>
+
+      <div style="background:rgba(236,72,153,.08);border:1px solid rgba(236,72,153,.2);border-radius:12px;padding:1.2rem;margin-bottom:1.4rem;">
+        <p style="color:#f9a8d4;font-size:.82rem;font-weight:600;margin-bottom:.9rem;">🔑 GitHub Setup (one time only)</p>
+        <div style="display:flex;flex-direction:column;gap:.75rem;">
+          <div>
+            <label style="color:#d1d5db;font-size:.8rem;display:block;margin-bottom:.3rem;">Personal Access Token</label>
+            <input id="ghtoken" class="gh-input" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off"/>
+            <p style="color:#666;font-size:.72rem;margin-top:.3rem;">Settings → Developer settings → Personal access tokens → Fine-grained → Contents: read & write</p>
+          </div>
+          <div style="display:flex;gap:.75rem;">
+            <div style="flex:1;">
+              <label style="color:#d1d5db;font-size:.8rem;display:block;margin-bottom:.3rem;">GitHub Username</label>
+              <input id="ghuser" class="gh-input" type="text" placeholder="visionvoy35-create"/>
+            </div>
+            <div style="flex:1;">
+              <label style="color:#d1d5db;font-size:.8rem;display:block;margin-bottom:.3rem;">Repository Name</label>
+              <input id="ghrepo" class="gh-input" type="text" placeholder="Dishita-Birthday-20"/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p style="color:#f9a8d4;font-size:.82rem;font-weight:600;margin-bottom:.8rem;">📂 Photos to upload (<span id="pendingCount">0</span> selected)</p>
+      <div id="photoList" style="max-height:220px;overflow-y:auto;background:rgba(0,0,0,.2);border-radius:10px;padding:.5rem .75rem;margin-bottom:1.4rem;">
+        <p id="noPhotos" style="color:#666;font-size:.82rem;text-align:center;padding:1rem 0;">No photos selected yet. Add photos using the gallery, timeline, or memories slots above.</p>
+      </div>
+
+      <button class="pbtn" onclick="startGithubUpload()" id="ghuploadbtn" style="width:100%;justify-content:center;display:flex;align-items:center;gap:.5rem;">
+        <span>Upload All Photos to GitHub</span>
+      </button>
+    </div>
+
+    <!-- Step 2: Progress -->
+    <div id="ghstep2" style="display:none;">
+      <h2 class="cur" style="font-size:1.9rem;color:#f472b6;margin-bottom:.3rem;">Uploading... 🚀</h2>
+      <p style="color:#9ca3af;font-size:.83rem;margin-bottom:1.4rem;">Sending photos to GitHub, please wait!</p>
+      <div class="progress-bar" style="margin-bottom:1.5rem;height:10px;">
+        <div class="progress-fill" id="ghprogfill"></div>
+      </div>
+      <div id="ghuploadlist" style="max-height:260px;overflow-y:auto;"></div>
+    </div>
+
+    <!-- Step 3: Done -->
+    <div id="ghstep3" style="display:none;text-align:center;">
+      <div style="font-size:3.5rem;margin-bottom:1rem;">🎉</div>
+      <h2 class="cur" style="font-size:2rem;color:#34d399;margin-bottom:.5rem;">All Done!</h2>
+      <p style="color:#d1d5db;font-size:.9rem;margin-bottom:.5rem;">Photos are live on the website!</p>
+      <p style="color:#9ca3af;font-size:.8rem;margin-bottom:1.8rem;">It may take 1–2 minutes for GitHub Pages to refresh.</p>
+      <a id="ghsitelink" href="#" target="_blank" class="pbtn" style="display:inline-block;text-decoration:none;margin-bottom:1rem;">🌐 Open Live Website</a>
+      <br/>
+      <button class="pbtn" onclick="closeGhModal()" style="background:rgba(236,72,153,.2);box-shadow:none;margin-top:.5rem;">Close</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== PHOTO STORE =====
+var PHOTOS = {
+  gallery:  [null,null,null,null,null,null,null,null,null],
+  timeline: [null,null],
+  memory:   [null,null,null,null,null],
+  // metadata: slot type + label + filename
+  meta: []
+};
+
+var ghUploading = false;
+
+// ===== STARS =====
+(function(){
+  var sb=document.getElementById('starsbg');
+  for(var i=0;i<65;i++){
+    var s=document.createElement('div');
+    var sz=Math.random()*2.5+0.8;
+    s.style.cssText='position:absolute;border-radius:50%;background:white;'
+      +'top:'+Math.random()*100+'%;left:'+Math.random()*100+'%;'
+      +'width:'+sz+'px;height:'+sz+'px;'
+      +'animation:twinkle '+(Math.random()*4+2)+'s '+(Math.random()*5)+'s infinite;';
+    sb.appendChild(s);
+  }
+})();
+
+// ===== CANDLES & CAKE =====
+var candleStates=[false,false,false,false,false];
+var cr=document.getElementById('candlerow');
+candleStates.forEach(function(_,i){
+  var c=document.createElement('div');
+  c.style.cssText='display:flex;flex-direction:column;align-items:center;cursor:pointer;padding:6px;transition:transform .1s;';
+  c.onmouseover=function(){this.style.transform='scale(1.15)';};
+  c.onmouseout=function(){this.style.transform='scale(1)';};
+  c.innerHTML='<div id="fl'+i+'" class="flame" style="width:12px;height:20px;background:linear-gradient(to top,#fbbf24,#f97316);border-radius:50% 50% 40% 40%;margin-bottom:3px;box-shadow:0 0 10px #fbbf24;transition:all .3s;"></div>'
+    +'<div style="width:12px;height:52px;background:linear-gradient(to bottom,white,#fce7f3);border-radius:4px 4px 0 0;overflow:hidden;position:relative;"><div style="position:absolute;inset:0;opacity:.3;background:repeating-linear-gradient(45deg,transparent,transparent 5px,#ff69b4 5px,#ff69b4 10px);"></div></div>';
+  c.onclick=function(e){
+    e.stopPropagation();
+    if(candleStates[i])return;
+    candleStates[i]=true;
+    var fl=document.getElementById('fl'+i);
+    fl.style.opacity='0';fl.style.transform='scale(0)';fl.classList.remove('flame');
+    if(candleStates.every(function(v){return v;})){
+      document.getElementById('hint').textContent='Yay! Now tap the cake to take a bite! 🍰';
+      document.getElementById('bitehint').style.display='block';
+      document.getElementById('cakewrap').classList.add('floatanim');
+      document.getElementById('cakesvg').style.cursor='pointer';
+    }
+  };
+  cr.appendChild(c);
+});
+
+document.getElementById('cakesvg').onclick=function(){
+  if(!candleStates.every(function(v){return v;}))return;
+  document.getElementById('whole').style.display='none';
+  document.getElementById('bitten').style.display='block';
+  var ov=document.getElementById('overlay');
+  ov.style.display='flex';
+  setTimeout(function(){
+    document.getElementById('intro').style.display='none';
+    ov.style.display='none';
+    var m=document.getElementById('main');
+    m.style.display='block';
+    m.classList.add('fadein');
+    window.scrollTo({top:0});
+    startTimer();
+  },2000);
+};
+
+// ===== TIMER =====
+function startTimer(){
+  var START=new Date('2023-08-17T00:00:00');
+  function calc(){
+    var d=new Date()-START;
+    document.getElementById('dv').textContent=Math.floor(d/864e5);
+    document.getElementById('hv').textContent=Math.floor((d/36e5)%24);
+    document.getElementById('mv').textContent=Math.floor((d/6e4)%60);
+  }
+  calc();setInterval(calc,60000);
+}
+
+// ===== IMAGE LOADER =====
+function readFile(file,cb){
+  var r=new FileReader();
+  r.onload=function(e){cb(e.target.result);};
+  r.readAsDataURL(file);
+}
+
+// ===== Register photo for upload =====
+function registerPhoto(type, idx, label, b64, filename) {
+  // Remove existing entry for this slot
+  PHOTOS.meta = PHOTOS.meta.filter(function(m){ return !(m.type===type && m.idx===idx); });
+  PHOTOS.meta.push({type:type, idx:idx, label:label, b64:b64, filename:filename});
+  updatePhotoList();
+}
+
+function updatePhotoList() {
+  var list = document.getElementById('photoList');
+  var noP = document.getElementById('noPhotos');
+  var count = document.getElementById('pendingCount');
+  if (!PHOTOS.meta.length) {
+    noP.style.display='block';
+    count.textContent='0';
+    return;
+  }
+  noP.style.display='none';
+  count.textContent=PHOTOS.meta.length;
+  list.innerHTML='';
+  PHOTOS.meta.forEach(function(m){
+    var row = document.createElement('div');
+    row.className='upload-row';
+    row.id='prow_'+m.type+'_'+m.idx;
+    row.innerHTML='<img src="'+m.b64+'" class="photo-thumb"/>'
+      +'<div style="flex:1;min-width:0;">'
+      +'<p style="font-size:.82rem;color:#f9a8d4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+m.label+'</p>'
+      +'<p style="font-size:.72rem;color:#666;">photos/'+m.filename+'</p>'
+      +'</div>'
+      +'<div class="status-dot dot-pending" id="dot_'+m.type+'_'+m.idx+'"></div>';
+    list.appendChild(row);
+  });
+}
+
+// ===== GALLERY =====
+var galSlots=[
+  {t:"The iconic duo 👯‍♀️",r:"-4deg"},
+  {t:"Birthday vibes 🎂",r:"3deg"},
+  {t:"Looking cute ✨",r:"-3deg"},
+  {t:"Festival feels 🌸",r:"5deg"},
+  {t:"Triplieee 🤝",r:"-5deg"},
+  {t:"Dishitayein 🌙",r:"2deg"},
+  {t:"Shopping chaos 🛍️",r:"-2deg"},
+  {t:"Mirror selfie 🪞",r:"4deg"},
+  {t:"Forever & Always 💖",r:"-3deg"}
+];
+var galEl=document.getElementById('gallery');
+galSlots.forEach(function(slot,i){
+  var label=document.createElement('label');
+  label.style.cursor='pointer';
+  label.innerHTML='<input type="file" accept="image/*" style="display:none;"/>'
+    +'<div class="polaroid" style="transform:rotate('+slot.r+');">'
+    +'<div id="gb'+i+'" style="width:100%;aspect-ratio:1;background:linear-gradient(135deg,#fbcfe8,#e9d5ff);border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;margin-bottom:.5rem;">'
+    +'<span style="font-size:1.5rem;">❤️</span><span style="position:absolute;bottom:6px;right:6px;font-size:1.1rem;">➕</span></div>'
+    +'<p class="cur" style="color:#374151;font-size:1rem;font-weight:700;text-align:center;">'+slot.t+'</p></div>';
+  label.querySelector('input').addEventListener('change',function(e){
+    var f=e.target.files[0]; if(!f)return;
+    readFile(f,function(b64){
+      PHOTOS.gallery[i]=b64;
+      document.getElementById('gb'+i).innerHTML='<img src="'+b64+'" style="width:100%;height:100%;object-fit:cover;"/>';
+      var fname='gallery_'+i+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      registerPhoto('gallery', i, slot.t, b64, fname);
+    });
+  });
+  galEl.appendChild(label);
+});
+
+// ===== TIMELINE =====
+var tlData=[
+  {title:"The First Face I Saw 🛗",text:"You were literally the first person I saw from our batch — in the lift of all places! hehe. Little did I know that random moment would turn into one of the best things to happen to me in college. 🥹",photo:false},
+  {title:"CCP Days 🎓",text:"Then came CCP, and suddenly we went from lift strangers to actual people in each other's lives. Those days were something else entirely.",photo:true,idx:0,asp:"4/3"},
+  {title:"Chiinii Log ☕",text:"And then we became Chiinii log — our little world, our little chaos. You just get it, and you get me, and that's everything.",photo:true,idx:1,asp:"1/1"},
+  {title:"The Only Constant 🌟",text:"Through every semester, every breakdown, every random 2am plan — you've been the one constant I could always count on. I'm so proud of the person you are becoming. 💪",photo:false},
+  {title:"Forever to Go 🥂",text:"Birthdays will come and go, but you're stuck with me for life. Cheers to making countless more memories together! Here's to forever, Dishita. 🥂",photo:false}
+];
+var tlEl=document.getElementById('timeline');
+tlData.forEach(function(item){
+  var div=document.createElement('div');
+  div.style.position='relative';
+  var photoHtml='';
+  if(item.photo){
+    photoHtml='<label style="display:block;margin-top:1rem;cursor:pointer;">'
+      +'<input type="file" accept="image/*" style="display:none;"/>'
+      +'<div id="tb'+item.idx+'" class="uslot" style="aspect-ratio:'+item.asp+';padding:1rem;">'
+      +'<span style="font-size:1.5rem;">📷</span><span>Click to add a photo</span></div></label>';
+  }
+  div.innerHTML='<div style="position:absolute;width:16px;height:16px;background:#ec4899;border-radius:50%;left:-9px;top:8px;box-shadow:0 0 10px #ff69b4;"></div>'
+    +'<div class="tcard"><h3 class="cur" style="font-size:1.6rem;color:#f472b6;margin-bottom:.4rem;">'+item.title+'</h3>'
+    +'<p style="color:#d1d5db;line-height:1.75;font-size:.93rem;">'+item.text+'</p>'+photoHtml+'</div>';
+  tlEl.appendChild(div);
+  if(item.photo){
+    var inp=div.querySelector('input');
+    (function(idx,asp,title){
+      inp.addEventListener('change',function(e){
+        var f=e.target.files[0]; if(!f)return;
+        readFile(f,function(b64){
+          PHOTOS.timeline[idx]=b64;
+          document.getElementById('tb'+idx).outerHTML='<img src="'+b64+'" style="width:100%;border-radius:10px;margin-top:4px;display:block;aspect-ratio:'+asp+';object-fit:cover;"/>';
+          var fname='timeline_'+idx+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+          registerPhoto('timeline', idx, title, b64, fname);
+        });
+      });
+    })(item.idx,item.asp,item.title);
+  }
+});
+
+// ===== MEMORIES =====
+var rots=[-4,3,-2,5,-3];
+var memEl=document.getElementById('memories');
+for(var mi=0;mi<5;mi++){
+  (function(i){
+    var label=document.createElement('label');
+    label.style.cursor='pointer';
+    label.innerHTML='<input type="file" accept="image/*" style="display:none;"/>'
+      +'<div style="background:white;padding:8px 8px 28px;box-shadow:0 10px 25px rgba(0,0,0,.4);border-radius:3px;transform:rotate('+rots[i]+'deg);transition:transform .3s;" '
+      +'onmouseover="this.style.transform=\'scale(1.07) rotate(0deg)\';this.style.zIndex=10;" '
+      +'onmouseout="this.style.transform=\'rotate('+rots[i]+'deg)\';this.style.zIndex=\'\';">'
+      +'<div id="mb'+i+'" style="width:100%;aspect-ratio:1;background:linear-gradient(135deg,#fce7f3,#ede9fe);border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">'
+      +'<span style="font-size:1.5rem;">❤️</span><span style="position:absolute;bottom:6px;right:6px;font-size:1.1rem;">➕</span></div></div>';
+    label.querySelector('input').addEventListener('change',function(e){
+      var f=e.target.files[0]; if(!f)return;
+      readFile(f,function(b64){
+        PHOTOS.memory[i]=b64;
+        document.getElementById('mb'+i).innerHTML='<img src="'+b64+'" style="width:100%;height:100%;object-fit:cover;"/>';
+        var fname='memory_'+i+'_'+f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+        registerPhoto('memory', i, 'Memory #'+(i+1), b64, fname);
+      });
+    });
+    memEl.appendChild(label);
+  })(mi);
+}
+
+// ===== GITHUB MODAL =====
+function openGithubModal() {
+  updatePhotoList();
+  document.getElementById('ghmodalbg').classList.add('open');
+  document.getElementById('ghstep1').style.display='block';
+  document.getElementById('ghstep2').style.display='none';
+  document.getElementById('ghstep3').style.display='none';
+}
+
+function closeGhModal() {
+  if(ghUploading) return;
+  document.getElementById('ghmodalbg').classList.remove('open');
+}
+
+// ===== GITHUB UPLOAD =====
+async function startGithubUpload() {
+  var token = document.getElementById('ghtoken').value.trim();
+  var user  = document.getElementById('ghuser').value.trim();
+  var repo  = document.getElementById('ghrepo').value.trim();
+
+  if(!token || !user || !repo) {
+    alert('Please fill in your GitHub token, username, and repo name!');
+    return;
+  }
+  if(!PHOTOS.meta.length) {
+    alert('No photos to upload yet! Add some photos first.');
+    return;
+  }
+
+  ghUploading = true;
+  document.getElementById('ghclose').style.display='none';
+  document.getElementById('ghstep1').style.display='none';
+  document.getElementById('ghstep2').style.display='block';
+
+  // Build upload list UI
+  var listEl = document.getElementById('ghuploadlist');
+  listEl.innerHTML='';
+  PHOTOS.meta.forEach(function(m,idx){
+    listEl.innerHTML+='<div class="upload-row" id="urow'+idx+'">'
+      +'<img src="'+m.b64+'" class="photo-thumb"/>'
+      +'<div style="flex:1;min-width:0;">'
+      +'<p style="font-size:.82rem;color:#f9a8d4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+m.label+'</p>'
+      +'<p style="font-size:.72rem;color:#666;" id="ustatus'+idx+'">Waiting...</p>'
+      +'</div>'
+      +'<div class="status-dot dot-pending" id="udot'+idx+'"></div>'
+    +'</div>';
+  });
+
+  var total = PHOTOS.meta.length;
+  var done = 0;
+  var errors = 0;
+
+  // Also track filenames uploaded for updating the HTML
+  var uploadedFiles = {};
+
+  for(var i=0; i<PHOTOS.meta.length; i++) {
+    var m = PHOTOS.meta[i];
+    var dot = document.getElementById('udot'+i);
+    var stat = document.getElementById('ustatus'+i);
+    dot.className='status-dot dot-uploading';
+    stat.textContent='Uploading...';
+
+    // Convert data URL to base64 only (strip header)
+    var b64clean = m.b64.split(',')[1];
+    var path = 'photos/' + m.filename;
+
+    try {
+      // Check if file exists to get its SHA (needed for update)
+      var sha = null;
+      try {
+        var checkRes = await fetch('https://api.github.com/repos/'+user+'/'+repo+'/contents/'+path, {
+          headers: {
+            'Authorization': 'token '+token,
+            'Accept': 'application/vnd.github+json'
+          }
+        });
+        if(checkRes.ok) {
+          var existing = await checkRes.json();
+          sha = existing.sha;
+        }
+      } catch(e){}
+
+      var body = {
+        message: '📸 Add photo: '+m.filename,
+        content: b64clean,
+        branch: 'main'
+      };
+      if(sha) body.sha = sha;
+
+      var res = await fetch('https://api.github.com/repos/'+user+'/'+repo+'/contents/'+path, {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'token '+token,
+          'Content-Type': 'application/json',
+          'Accept': 'application/vnd.github+json'
+        },
+        body: JSON.stringify(body)
+      });
+
+      if(res.ok) {
+        dot.className='status-dot dot-done';
+        stat.textContent='✓ Uploaded!';
+        uploadedFiles[m.type+'_'+m.idx] = 'photos/'+m.filename;
+        done++;
+      } else {
+        var err = await res.json();
+        dot.className='status-dot dot-error';
+        stat.textContent='✗ ' + (err.message||'Failed');
+        errors++;
+      }
+    } catch(e) {
+      dot.className='status-dot dot-error';
+      stat.textContent='✗ Network error';
+      errors++;
+    }
+
+    // Update progress
+    var prog = Math.round(((i+1)/total)*100);
+    document.getElementById('ghprogfill').style.width=prog+'%';
+  }
+
+  // Now update index.html to reference the uploaded photos
+  if(done > 0) {
+    try {
+      await updateIndexHtml(token, user, repo, uploadedFiles);
+    } catch(e) {
+      console.warn('Could not update index.html:', e);
+    }
+  }
+
+  ghUploading = false;
+  document.getElementById('ghstep2').style.display='none';
+  document.getElementById('ghstep3').style.display='block';
+  document.getElementById('ghclose').style.display='block';
+
+  var siteUrl = 'https://'+user+'.github.io/'+repo+'/';
+  document.getElementById('ghsitelink').href = siteUrl;
+}
+
+// ===== UPDATE index.html WITH PHOTO REFERENCES =====
+async function updateIndexHtml(token, user, repo, uploadedFiles) {
+  // Fetch current index.html
+  var res = await fetch('https://api.github.com/repos/'+user+'/'+repo+'/contents/index.html', {
+    headers: {
+      'Authorization': 'token '+token,
+      'Accept': 'application/vnd.github+json'
+    }
+  });
+  if(!res.ok) return;
+  var data = await res.json();
+  var sha = data.sha;
+  var currentHtml = atob(data.content.replace(/\n/g,''));
+
+  // Build a baked-photos script to inject
+  // Collect all photos (use uploaded paths where available, else skip)
+  var bakedGallery = PHOTOS.gallery.map(function(v,i) {
+    return uploadedFiles['gallery_'+i] ? uploadedFiles['gallery_'+i] : null;
+  });
+  var bakedTimeline = PHOTOS.timeline.map(function(v,i) {
+    return uploadedFiles['timeline_'+i] ? uploadedFiles['timeline_'+i] : null;
+  });
+  var bakedMemory = PHOTOS.memory.map(function(v,i) {
+    return uploadedFiles['memory_'+i] ? uploadedFiles['memory_'+i] : null;
+  });
+
+  var bakedScript = '<script id="baked-photos">'
+    +'(function(){'
+    +'var G='+JSON.stringify(bakedGallery)+';'
+    +'var T='+JSON.stringify(bakedTimeline)+';'
+    +'var M='+JSON.stringify(bakedMemory)+';'
+    +'var asps=["4/3","1/1"];'
+    +'function setImg(id,src,style){'
+    +'  var e=document.getElementById(id);if(!e)return;'
+    +'  e.innerHTML=\'<img src="\'+src+\'" style="\'+style+\'"/>\';}'
+    +'window.addEventListener("DOMContentLoaded",function(){'
+    +'  G.forEach(function(s,i){if(s)setImg("gb"+i,s,"width:100%;height:100%;object-fit:cover;");});'
+    +'  T.forEach(function(s,i){'
+    +'    if(!s)return;'
+    +'    var e=document.getElementById("tb"+i);'
+    +'    if(e){e.outerHTML=\'<img src="\'+s+\'" style="width:100%;border-radius:10px;margin-top:4px;display:block;aspect-ratio:\'+asps[i]+\';object-fit:cover;"/>\';}'
+    +'  });'
+    +'  M.forEach(function(s,i){if(s)setImg("mb"+i,s,"width:100%;height:100%;object-fit:cover;");});'
+    +'});'
+    +'})();'
+    +'<\/script>';
+
+  // Remove old baked script if any
+  var cleaned = currentHtml.replace(/<script id="baked-photos">[\s\S]*?<\/script>/,'');
+  var newHtml = cleaned.replace('</head>', bakedScript + '</head>');
+
+  // Upload updated html
+  var encoded = btoa(unescape(encodeURIComponent(newHtml)));
+  await fetch('https://api.github.com/repos/'+user+'/'+repo+'/contents/index.html', {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'token '+token,
+      'Content-Type': 'application/json',
+      'Accept': 'application/vnd.github+json'
+    },
+    body: JSON.stringify({
+      message: '🎂 Update photos in birthday site',
+      content: encoded,
+      sha: sha,
+      branch: 'main'
+    })
+  });
+}
+</script>
+</body>
+</html>
